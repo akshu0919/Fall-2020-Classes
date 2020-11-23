@@ -1,0 +1,280 @@
+Script started on Wed 18 Nov 2020 12:06:59 AM EST
+]0;kumar_a@cobra:~/csc245/Lab6[?1034h[kumar_a@cobra Lab6]$ c++ rado[Kix.cpp[K[K[K[K[K[K[K[K[K[K[K[Kat radix.cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+using namespace std;
+
+        int maxElemLength(const vector<int>& v);
+        int GetDigit(int number, int k);
+        vector<queue<int> > ItemsToQueues(const vector<int>& L, int k);
+        vector<int> QueuesToArray(vector<queue<int> >& QA, int numVals);
+        void RadixSort(vector<int>& L, int numDigits);
+        void PrintVector(const vector<int>& L);
+
+
+        int main()
+        {
+                vector<int> vector;
+                int array[] = {380,95,345,382,260,100,492};
+                cout << "Pre Radix Sort: ";
+                for(int i = 0; i < 7; i++)
+                {
+                        vector.push_back(array[i]);
+                        cout << array[i] << " ";
+                }
+
+                cout << endl;
+
+                int maxElement = maxElemLength(vector);
+                RadixSort(vector, maxElement);
+
+                cout << "Post Radix Sort :";
+                PrintVector(vector);
+
+
+                return 0;
+	}
+
+
+        int maxElemLength(const vector<int>& v)
+        {
+                int max = v[0];
+                for(int i = 0; i < v.size(); i++)
+                {
+                        if(max < v[i])
+                        {
+                                max = v[i];
+                        }
+                }
+
+                if(max < 10)
+                        return 1;
+
+                if(max >= 10 && max < 100)
+                        return 2;
+
+                if(max >= 100)
+                        return 3;
+        }
+
+        int GetDigit(int number, int k)
+        {
+
+                while(k > 0)
+                {
+                        number /= 10;
+                        k--;
+                }
+
+		return number % 10;
+
+        }
+
+        vector<queue<int> > ItemsToQueues(const vector<int>& L, int k)
+        {
+                vector<queue<int> > QA(10);
+                for(int i = 0; i < L.size(); i++)
+                {
+                        int numAtPlace = GetDigit(L[i], k);
+                        QA[numAtPlace].push(L[i]);
+                }
+
+                return QA;
+
+        }
+
+        vector<int> QueuesToArray(vector<queue<int> >& QA, int numVals)
+        {
+                int place = 0;
+                vector<int> v(numVals);
+                for(int i = 0; i < 10; i++)
+                {
+                        while(!QA[i].empty())
+                        {
+                                v[place] = QA[i].front();
+                                QA[i].pop();
+                                place++;
+                        }
+                }
+
+                return v;
+        }
+
+	void RadixSort(vector<int>& L, int numDigits)
+        {
+                vector<queue<int> > QA(10);
+
+                for(int i = 0; i < numDigits; i++)
+                {
+
+                        QA = ItemsToQueues(L, i);
+                        L = QueuesToArray(QA, L.size());
+                }
+        }
+
+        void PrintVector(const vector<int>& L)
+        {
+                for(int i = 0; i < L.size(); i++)
+                {
+                        cout << L[i] << " ";
+                }
+
+                cout << endl;
+        }
+
+]0;kumar_a@cobra:~/csc245/Lab6[kumar_a@cobra Lab6]$ c++ radix.cpp
+[01m[Kradix.cpp:[m[K In function ‘[01m[Kint maxElemLength(const std::vector<int>&)[m[K’:
+[01m[Kradix.cpp:58:9:[m[K [01;35m[Kwarning: [m[Kcontrol reaches end of non-void function [[01;35m[K-Wreturn-type[m[K]
+   58 |         [01;35m[K}[m[K
+      |         [01;35m[K^[m[K
+]0;kumar_a@cobra:~/csc245/Lab6[kumar_a@cobra Lab6]$ a.out
+Pre Radix Sort: 380 95 345 382 260 100 492 
+Post Radix Sort :95 100 260 345 380 382 492 
+]0;kumar_a@cobra:~/csc245/Lab6[kumar_a@cobra Lab6]$ cat radixS.cpp 
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+using namespace std;
+
+	int maxElemLength(const vector<string>& v);
+	char GetChar(string word, int position);
+	vector<queue<string> > ItemsToQueues(const vector<string>& vec, char letter);
+	vector<string> QueuesToArray(vector<queue<string> >& QA, int letterCount);
+	void RadixSort(vector<string>& vec, int charCount);
+	void PrintVector(const vector<string>& vec);
+	void padString(vector<string>& v, int maxLength);
+	void unPadString(vector<string> &v, int maxLength);	
+
+
+	int main()
+	{
+		vector<string> vec;
+		string array[]= {"zebra", "apple", "orange", "can", "candy", "a", "top", "pumpkin", "today", "parade"};
+		cout << "Pre Radix Sort: ";
+		for(int i = 0; i < 10; i++)
+		{
+			vec.push_back(array[i]);
+			cout << array[i] << " ";
+		}
+		
+		cout << endl;
+	
+		int charCount = maxElemLength(vec);
+		
+		padString(vec, charCount);	
+		RadixSort(vec, charCount);
+		unPadString(vec, charCount);
+
+		cout << "Post Radix Sort :";
+		PrintVector(vec);
+	
+
+		return 0;
+	}
+	
+	int maxElemLength(const vector<string>& v)
+	{
+		int max = v[0].length();
+		for(int i = 0; i < v.size(); i++)
+		{
+			if(max < v[i].length())
+			{
+				max = v[i].length();
+			}
+		}	
+		
+		return max;
+	}
+	
+	void padString(vector<string>& v, int maxLength)
+	{
+		for(int i = 0; i < v.size(); i++)
+		{
+			if(v[i].length() < maxLength)
+			{
+				int pad = maxLength - v[i].length();
+				for (int j = 0; j < pad; j++)
+				{
+					v[i] = v[i] + " ";
+				}
+			}
+		}	
+	}
+
+	void unPadString(vector<string>&v, int maxLength)
+	{
+		for(int i = 0; i < v.size(); i++)
+		{
+			string temp = v[i].substr(0, v[i].find(" "));
+			v[i] = temp;
+		}
+	}
+	
+	char GetChar(string word, int position)
+	{
+		char letter = word[position];
+		return letter;
+	
+	}
+	
+	vector<queue<string> > ItemsToQueues(const vector<string>& vec, int j)
+	{
+		vector<queue<string> > QA(128);
+		for(int i = 0; i < vec.size(); i++)
+		{
+			char charPos = GetChar(vec[i], j);
+      			int pos = (int) charPos;
+			QA[pos].push(vec[i]);
+		}
+	
+		return QA;
+	}
+	
+	vector<string> QueuesToArray(vector<queue<string> >& QA, int letterCount)
+	{
+		int place = 0;
+		vector<string> v(letterCount);
+		for(int i = 0; i < 128; i++)
+		{
+			while(!QA[i].empty())
+			{
+				v[place] = QA[i].front();
+				QA[i].pop(); 
+				place++;				
+			}
+		}
+	
+		return v;
+	}
+	
+	void RadixSort(vector<string>& vec, int charCount)
+	{
+		vector<queue<string> > QA(128);
+		for(int i = charCount; i >= 0; i--)
+		{
+			QA = ItemsToQueues(vec, i);
+			vec = QueuesToArray(QA, vec.size()); 
+		}
+	}
+
+
+	void PrintVector(const vector<string>& vec)
+	{
+		for(int i = 0; i < vec.size(); i++)
+		{
+			cout << vec[i] << " "; 
+		}
+		cout << endl;
+	}
+	
+]0;kumar_a@cobra:~/csc245/Lab6[kumar_a@cobra Lab6]$ c++ radixS.cpp 
+]0;kumar_a@cobra:~/csc245/Lab6[kumar_a@cobra Lab6]$ a.out
+Pre Radix Sort: zebra apple orange can candy a top pumpkin today parade 
+Post Radix Sort :a apple can candy orange parade pumpkin today top zebra 
+]0;kumar_a@cobra:~/csc245/Lab6[kumar_a@cobra Lab6]$ exit
+exit
+
+Script done on Wed 18 Nov 2020 12:08:01 AM EST

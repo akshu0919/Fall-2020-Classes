@@ -1,0 +1,28 @@
+MERCER TENNIS
+10
+10 1010
+32 1011
+67 1100
+69 00
+73 1101
+77 1110
+78 011
+82 100
+83 1111
+84 010
+111000100110000100101101000011011110111111010
+
+The comprresing alogirtihm makes a Huffman tree using the letters given based on their weights. So first you have to make a forest using the frequency of each node. 
+Forest of Nodes:
+M has freq of 1
+E has freq of 3
+R has freq of 2
+C has freq of 1
+T has freq of 1
+N has freq of 2
+I has freq of 1
+S has freq of 1
+
+Now in the next step you merge the smallest nodes together. If there is a tie then you just choose 2. So we can choose I and S since both have a freq of 1. Their parent will be T1 and it will have a freq of 2 which is the feq of S and T added together. You will then continue to do this and each time you include the parent node as part of the forest. So if the smallest node is a Tn node then you add that Tn node with whatever the letter ndoe will be. 
+
+Now you have to assign all the left links a weight of 0 and all right links a weight of 1. This will complete you Huffman tree and now you have a unique encoding for each letter in the tree. That is where the numbers for MERCER TENNIS come from. The M which has an ASCII code of 77 got the unique encoding 1110 (you can see the codes at the top). While the letter E which has an ASCII code of 69 got the unique encoding of 00. This is much smaller than M's encoding. This is because E's frequency was much higher which put it closer to the root of the Huffman tree resulting in a smaller code. The ASCII code for a space is 32 and the ASCII code for new line is 10. Those got their own unique encoding as well. At the very bottom of those codes. The statement MERCER TENNIS was written using those unique encodings. 

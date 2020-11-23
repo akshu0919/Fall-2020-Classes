@@ -1,0 +1,113 @@
+#include <iostream>
+#include "bet.h"
+using namespace std;
+
+char expressionType(char& choice);
+string expression(string& exp);
+BET prefixExpression();
+BET postfixExpression();
+char print(BET expTree, char& choice);
+void programEnd();
+
+int main()
+{
+	char choice;
+	string exp;
+	
+	do
+	{
+		expressionType (choice);
+		switch (toupper(choice))
+		{
+			case '1' : print(prefixExpression(), choice); break;
+			case '2' : cout << "Need to implement"; break;
+			case '3' : print(postfixExpression(), choice); break;
+			case 'Y' : expressionType(choice); break;
+			case 'N' : programEnd; break;
+			default  : cout << "\tError. Try Again." << endl;
+		}	
+	} while (toupper(choice) != 'N');	
+
+	return 0;
+}
+
+char expressionType(char& choice)
+{
+	char input;
+	cout << "************ Building Binary Expression Trees ************" << endl;
+	cout << "	(1) Prefix	(2) Infix	(3) Postfix	" << endl;
+	cout << "Your Expression Type ==> " ;
+	cin >> input;
+
+	choice = input;
+
+	return choice;
+}
+
+void programEnd()
+{
+	cout << "Program Now Deconstruction Tree & Exiting... " << endl;
+	//~BET();
+}
+
+BET prefixExpression()
+{
+	BET expTree = BET();
+	string input;
+
+	cout << "Your Expression ==> ";
+	cin >> input;
+
+	for(int i = input.length() - 1; i > 0; i--)
+	{
+		if(input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/')
+			expTree.insertPrefixOperator(input[i]);
+		else
+			expTree.insertOperand(input[i]);
+	}
+
+	return expTree; 		
+}
+
+BET postfixExpression()
+{
+	BET expTree = BET();
+        string input;
+
+        cout << "Your Expression ==> ";
+        cin >> input;
+
+        for(int i = 0; i < input.length() - 1; i++)
+        {
+                if(input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/')
+                        expTree.insertPrefixOperator(input[i]);
+                else
+                        expTree.insertOperand(input[i]);
+        }
+
+        return expTree;
+}
+
+char printFinal(BET expTree, char& choice)
+{
+	char again;
+
+	cout << "Prefix Expression Produced From Tree: " << endl;
+	expTree.preorder();
+	cout << endl;
+
+	cout << "Infix Expression Produced From Tree: " << endl;
+	expTree.inorder();
+	cout << endl;
+
+	cout << "Postfix Expression Produced From Tree: " << endl;
+	expTree.postorder();
+	cout << endl;
+
+	cout << "Build Another Tree? (Y/N) " << endl;
+	cin >> again;
+
+	choice = again;
+
+	return choice;
+}
